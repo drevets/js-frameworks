@@ -1,7 +1,7 @@
 {
-  "name": "boilermaker",
+  "name": "popular-frameworks",
   "version": "1.0.0",
-  "description": "Some boilerplate code to get you started - get shakin'!",
+  "description": "What are the most popular frameworks on GitHub?",
   "engines": {
     "node": ">= 7.0.0"
   },
@@ -33,7 +33,7 @@
       "git add"
     ]
   },
-  "author": "Fullstack Academy of Code",
+  "author": "Emily Drevets",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.15.3",
@@ -55,6 +55,7 @@
     "redux": "^3.6.0",
     "redux-logger": "^2.8.1",
     "redux-thunk": "^2.2.0",
+    "semantic-ui-react": "^0.82.0",
     "sequelize": "^4.3.1",
     "socket.io": "^2.0.3"
   },

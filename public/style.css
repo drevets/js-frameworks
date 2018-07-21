@@ -19,3 +19,65 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.chartContainer {
+  max-width: 500px;
+  padding: 1rem;
+}
+
+.cardContainer {
+  max-width: 25%;
+  padding: 1rem;
+}
+
+.analyticsContainer {
+  max-width: 70%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination-component {
+  text-align: center;
+}
+
+#navbar {
+  border-radius: 0;
+}
+
+.data-querying {
+  display: flex;
+  justify-content: space-between;
+}
+
+.data-filtering {
+  display: flex;
+}
+
+.data-filtering div {
+  margin-right: 1em;
+}
+
+.ui.container {
+  width: 80%;
+  padding: 1em;
+}
+
+.dropdownMenu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.h5{
+  font-size: 13px;
+  margin-left: 90px;
+  margin-top: 50px;
+  padding: 10px
+}
+
+.ui.header:first-child {
+  margin-top: 1em;
+}
