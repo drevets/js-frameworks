@@ -12,14 +12,20 @@ class FrameworkData extends Component {
             <Table.HeaderCell>Header</Table.HeaderCell>
             <Table.HeaderCell>Header</Table.HeaderCell>
             <Table.HeaderCell>Header</Table.HeaderCell>
+            <Table.HeaderCell>Header</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
         <Table.Body>
           <Table.Row>
-            <Table.Cell>
-              <Label ribbon>First</Label>
-            </Table.Cell>
+            <Table.Cell>Cell</Table.Cell>
+            <Table.Cell>Cell</Table.Cell>
+            <Table.Cell>Cell</Table.Cell>
+            <Table.Cell>Cell</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Cell</Table.Cell>
+            <Table.Cell>Cell</Table.Cell>
             <Table.Cell>Cell</Table.Cell>
             <Table.Cell>Cell</Table.Cell>
           </Table.Row>
@@ -27,8 +33,10 @@ class FrameworkData extends Component {
             <Table.Cell>Cell</Table.Cell>
             <Table.Cell>Cell</Table.Cell>
             <Table.Cell>Cell</Table.Cell>
+            <Table.Cell>Cell</Table.Cell>
           </Table.Row>
           <Table.Row>
+            <Table.Cell>Cell</Table.Cell>
             <Table.Cell>Cell</Table.Cell>
             <Table.Cell>Cell</Table.Cell>
             <Table.Cell>Cell</Table.Cell>
@@ -37,7 +45,7 @@ class FrameworkData extends Component {
 
         <Table.Footer>
           <Table.Row>
-            <Table.HeaderCell colSpan="3">
+            <Table.HeaderCell colSpan="4">
               <Menu floated="right" pagination>
                 <Menu.Item as="a" icon>
                   <Icon name="chevron left" />
@@ -59,4 +67,16 @@ class FrameworkData extends Component {
   }
 }
 
-export default FrameworkData
+const mapDispatchToProps = dispatch => {
+  return {
+
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FrameworkData);
