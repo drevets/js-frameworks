@@ -1,18 +1,28 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Icon, Label, Menu, Table, Container} from 'semantic-ui-react'
+import {getGitHubReactVotes} from '../store'
 
 class FrameworkData extends Component {
+  constructor(){
+    super()
+  }
+
+componentDidMount(){
+  this.props.getNewReactVotes()
+}
+
   render() {
+    console.log('this.props.reactVotes', this.props.reactVotes)
     return (
       <Container>
       <Table celled>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Header</Table.HeaderCell>
-            <Table.HeaderCell>Header</Table.HeaderCell>
-            <Table.HeaderCell>Header</Table.HeaderCell>
-            <Table.HeaderCell>Header</Table.HeaderCell>
+            <Table.HeaderCell>Framework</Table.HeaderCell>
+            <Table.HeaderCell>Fork Events</Table.HeaderCell>
+            <Table.HeaderCell>Pull Request Events</Table.HeaderCell>
+            <Table.HeaderCell>Issues Event</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
@@ -67,15 +77,16 @@ class FrameworkData extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-
-  }
-}
 
 const mapStateToProps = state => {
   return {
+    reactVotes: state.votes.reactVotes
+  }
+}
 
+const mapDispatchToProps = dispatch => {
+  return {
+    getNewReactVotes: () => dispatch(getGitHubReactVotes())
   }
 }
 

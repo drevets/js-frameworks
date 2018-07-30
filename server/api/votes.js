@@ -16,6 +16,32 @@ router.get('/react', async (req, res, next) => {
   }
 })
 
+router.post('/react', async (req, res, next) => {
+  console.log('whole req', req)
+  console.log('posting react votes')
+  const voteTypes = {
+    'IssuesEvent': true,
+    'PullRequestEvent': true,
+    'ForkEvent': true
+  }
+  const votes = req.body.filter(element => {
+    return voteTypes[element.type]
+  })
+  try {
+    const createdVotes = votes.map(async vote => {
+      const [returnedInstance, created] = await Vote.findOrCreate({where: {
+        voteId: Number(vote.id)
+      }, defaults: {voteId: Number(vote.id), type: vote.type, actorId: vote.actor.id, repoId: vote.repo.id, repoName: vote.repo.name}})
+      return [returnedInstance, created]
+    }).filter(vote => {
+      return vote[1]
+    })
+    res.send(createdVotes)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/ember', async (req, res, next) => {
   try {
     const votes = await Vote.findAll({

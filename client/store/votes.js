@@ -8,7 +8,7 @@ const GET_REACT_VOTES = 'GET_REACT_VOTES'
 const GET_VUE_VOTES = 'GET_VUE_VOTES'
 const GET_EMBER_VOTES = 'GET_EMBER_VOTES'
 const GET_ANGULAR_VOTES = 'GET_ANGULAR_VOTES'
-const UPDATE_VOTES = 'UPDATE_VOTES'
+const UPDATE_REACT_VOTES = 'UPDATE_REACT_VOTES'
 
 /**
  * INITIAL STATE
@@ -33,8 +33,8 @@ const gotEmberVotes = emberVotes => ({type: GET_EMBER_VOTES, emberVotes})
 
 const gotAngularVotes = angularVotes => ({type: GET_ANGULAR_VOTES, angularVotes})
 
-const updateVotes = updatedVotes => ({
-  type: UPDATE_VOTES, updatedVotes
+const updateReactVotes = updatedReactVotes => ({
+  type: UPDATE_REACT_VOTES, updatedReactVotes
 })
 
 
@@ -42,12 +42,19 @@ const updateVotes = updatedVotes => ({
  * THUNK CREATORS
  */
 
-export const getGitHubVotes = () => async dispatch => {
+export const getGitHubReactVotes = () => async dispatch => {
+  let nextPage = null
+  let lastPage = null
   try {
-    const res = await axios.get('INSERT GITHUB API HERE')
-    //do some sorting into the different houses of votes here
-    //will need to make some post requests too right here
-    dispatch(updateVotes(res.data))
+    console.log('trying to get react votes!')
+    const res = await axios.get('https://api.github.com/repos/facebook/react/events')
+    const nextPage = res.headers.link
+    const headerLink = res.headers.link.split('?')
+    console.log('info received from GitHub', res.data)
+    console.log('headers received', res.headers.link.split('?'))
+    const newVotes = await axios.post('/api/votes/react', res.data)
+    console.log('new react votes?', newVotes.data)
+    dispatch(updateReactVotes(newVotes.data))
   } catch (err) {
     console.error(err)
   }
@@ -102,6 +109,8 @@ export default function(state = defaultVotes, action) {
       return {...state, emberVotes: action.emberVotes}
     case GET_ANGULAR_VOTES:
       return {...state, angularVotes: action.angularVotes}
+    case UPDATE_REACT_VOTES:
+      return {...state, reactVotes: [...state.reactVotes, ...action.updatedReactVotes]}
     default:
       return state
   }
