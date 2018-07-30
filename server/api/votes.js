@@ -7,9 +7,9 @@ module.exports = router
 
 router.get('/react', async (req, res, next) => {
   try {
-    const votes = await Vote.findAll({
-      attributes: ['id', 'email']
-    })
+    const votes = await Vote.findAll({where: {
+      repoName: 'facebook/react'
+    }, attributes: ['type']})
     res.json(votes)
   } catch (err) {
     next(err)
@@ -17,8 +17,6 @@ router.get('/react', async (req, res, next) => {
 })
 
 router.post('/react', async (req, res, next) => {
-  console.log('whole req', req)
-  console.log('posting react votes')
   const voteTypes = {
     'IssuesEvent': true,
     'PullRequestEvent': true,

@@ -1,19 +1,35 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Icon, Label, Menu, Table, Container} from 'semantic-ui-react'
-import {getGitHubReactVotes} from '../store'
+import {getGitHubReactVotes, fetchReactVotes} from '../store'
 
 class FrameworkData extends Component {
   constructor(){
     super()
+    this.state = {
+      loading: true
+    }
   }
 
-componentDidMount(){
-  this.props.getNewReactVotes()
+async componentDidMount(){
+  await this.props.getOldReactVotes()
+  // await this.props.getNewReactVotes()
+  this.setState({loading: false})
+}
+
+filterReactVotes = (reactVotes) => {
+  const pullRequests = reactVotes.filter(vote => vote.type === 'PullRequestEvent')
+  const issues = reactVotes.filter(vote => vote.type === 'IssuesEvent')
+  const forks = reactVotes.filter(vote => vote.type === 'ForkEvent')
+  return {pullRequests, issues, forks}
 }
 
   render() {
-    console.log('this.props.reactVotes', this.props.reactVotes)
+
+    if (this.state.loading) return (<h1>LOADING</h1>)
+
+    const filteredReactVotes = this.filterReactVotes(this.props.reactVotes)
+
     return (
       <Container>
       <Table celled>
@@ -28,10 +44,10 @@ componentDidMount(){
 
         <Table.Body>
           <Table.Row>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
+            <Table.Cell>React</Table.Cell>
+            <Table.Cell>{filteredReactVotes.forks.length}</Table.Cell>
+            <Table.Cell>{filteredReactVotes.pullRequests.length}</Table.Cell>
+            <Table.Cell>{filteredReactVotes.issues.length}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>Cell</Table.Cell>
@@ -52,25 +68,6 @@ componentDidMount(){
             <Table.Cell>Cell</Table.Cell>
           </Table.Row>
         </Table.Body>
-
-        <Table.Footer>
-          <Table.Row>
-            <Table.HeaderCell colSpan="4">
-              <Menu floated="right" pagination>
-                <Menu.Item as="a" icon>
-                  <Icon name="chevron left" />
-                </Menu.Item>
-                <Menu.Item as="a">1</Menu.Item>
-                <Menu.Item as="a">2</Menu.Item>
-                <Menu.Item as="a">3</Menu.Item>
-                <Menu.Item as="a">4</Menu.Item>
-                <Menu.Item as="a" icon>
-                  <Icon name="chevron right" />
-                </Menu.Item>
-              </Menu>
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Footer>
       </Table>
       </Container>
     )
@@ -86,7 +83,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getNewReactVotes: () => dispatch(getGitHubReactVotes())
+    getNewReactVotes: () => dispatch(getGitHubReactVotes()),
+    getOldReactVotes: () => dispatch(fetchReactVotes())
   }
 }
 
