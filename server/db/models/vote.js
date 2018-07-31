@@ -18,6 +18,9 @@ const Vote = db.define('vote', {
   },
   repoName: {
     type: Sequelize.STRING
+  },
+  voteTime: {
+    type: Sequelize.DATE
   }
 })
 
