@@ -9,6 +9,7 @@ const GET_VUE_VOTES = 'GET_VUE_VOTES'
 const GET_EMBER_VOTES = 'GET_EMBER_VOTES'
 const GET_ANGULAR_VOTES = 'GET_ANGULAR_VOTES'
 const UPDATE_REACT_VOTES = 'UPDATE_REACT_VOTES'
+const UPDATE_VOTES = 'UPDATE_VOTES'
 
 /**
  * INITIAL STATE
@@ -17,50 +18,66 @@ const defaultVotes = {
   reactVotes: [],
   vueVotes: [],
   emberVotes: [],
-  angularVotes: []
+  angularVotes: [],
 }
 
 /**
  * ACTION CREATORS
  */
 
- //damn gotta change this get and got stuff
+//damn gotta change this get and got stuff
 const gotReactVotes = reactVotes => ({type: GOT_REACT_VOTES, reactVotes})
 
 const gotVueVotes = vueVotes => ({type: GET_VUE_VOTES, vueVotes})
 
 const gotEmberVotes = emberVotes => ({type: GET_EMBER_VOTES, emberVotes})
 
-const gotAngularVotes = angularVotes => ({type: GET_ANGULAR_VOTES, angularVotes})
-
-const updateReactVotes = updatedReactVotes => ({
-  type: UPDATE_REACT_VOTES, updatedReactVotes
+const gotAngularVotes = angularVotes => ({
+  type: GET_ANGULAR_VOTES,
+  angularVotes
 })
 
+const updateReactVotes = updatedReactVotes => ({
+  type: UPDATE_REACT_VOTES,
+  updatedReactVotes
+})
+
+const updateVotes = updatedVotes, framework => ({
+  type: UPDATE_VOTES,
+  updatedVotes,
+  framework
+})
 
 /**
  * THUNK CREATORS
  */
 
- //this should call GitHub API and fetch 300 most recent events and send them to database where new votes will either be created or not, and then the new created votes will be sent back
+//this should call GitHub API and fetch 300 most recent events and send them to database where new votes will either be created or not, and then the new created votes will be sent back
 
- //this should only be called once, and after that, can just call for the votes that have been created since the last database update (how can I get this to run in the background??)
+//this should only be called once, and after that, can just call for the votes that have been created since the last database update (how can I get this to run in the background??)
 export const getGitHubReactVotes = () => async dispatch => {
   let nextPage = null
   let lastPage = null
   let newVotes = []
   try {
-    const res = await axios.get('https://api.github.com/repos/facebook/react/events')
+    const res = await axios.get(
+      'https://api.github.com/repos/facebook/react/events'
+    )
     const headerLink = res.headers.link.split('?')
     nextPage = Number(headerLink[1].split('>')[0].split('=')[1])
-    lastPage = Number(headerLink[2].split('>')[0].split('=')[1])
+    // lastPage = Number(headerLink[2].split('>')[0].split('=')[1])
     const votes = res.data
     let newVotesData = await axios.post('/api/votes/react', votes)
     newVotes = newVotesData.data
-    while (nextPage <= lastPage) {
-      let nextVotes = await axios.get(`https://api.github.com/repos/facebook/react/events?page=${nextPage}`)
-      nextPage ++
-      let nextNewVotesData = await axios.post('/api/votes/react', nextVotes.data)
+    while (nextPage <= 10) {
+      let nextVotes = await axios.get(
+        `https://api.github.com/repos/facebook/react/events?page=${nextPage}`
+      )
+      nextPage++
+      let nextNewVotesData = await axios.post(
+        '/api/votes/react',
+        nextVotes.data
+      )
       newVotes = [...newVotes, ...nextNewVotesData.data]
     }
     dispatch(updateReactVotes(newVotes))
@@ -69,7 +86,40 @@ export const getGitHubReactVotes = () => async dispatch => {
   }
 }
 
+export const getGitVotes = (framework, owner) => async dispatch => {
+  let nextPage = null
+  let lastPage = null
+  let newVotes = []
+  try {
+    const res = await axios.get(
+      `https://api.github.com/repos/${owner}/${framework}/events`
+    )
+    const headerLink = res.headers.link.split('?')
+    nextPage = Number(headerLink[1].split('>')[0].split('=')[1])
+    // lastPage = Number(headerLink[2].split('>')[0].split('=')[1])
+    const votes = res.data
+    let newVotesData = await axios.post(`/api/votes/${framework}`, votes)
+    newVotes = newVotesData.data
+    while (nextPage <= 10) {
+      let nextVotes = await axios.get(
+        `https://api.github.com/repos/${owner}/${framework}/events?page=${nextPage}`
+      )
+      nextPage++
+      let nextNewVotesData = await axios.post(
+        `/api/votes/${framework}`,
+        nextVotes.data
+      )
+      newVotes = [...newVotes, ...nextNewVotesData.data]
+    }
+    dispatch(updateVotes(newVotes, framework))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 export const fetchReactVotes = () => async dispatch => {
+  const date = new Date()
+  console.log('date', date)
   try {
     const res = await axios.get('/api/votes/react')
     dispatch(gotReactVotes(res.data))
@@ -119,7 +169,12 @@ export default function(state = defaultVotes, action) {
     case GET_ANGULAR_VOTES:
       return {...state, angularVotes: action.angularVotes}
     case UPDATE_REACT_VOTES:
-      return {...state, reactVotes: [...state.reactVotes, ...action.updatedReactVotes]}
+      return {
+        ...state,
+        reactVotes: [...state.reactVotes, ...action.updatedReactVotes]
+      }
+    case UPDATE_VOTES:
+    //fill in the blanks here
     default:
       return state
   }

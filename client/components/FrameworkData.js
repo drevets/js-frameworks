@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Icon, Label, Menu, Table, Container} from 'semantic-ui-react'
-import {getGitHubReactVotes, fetchReactVotes} from '../store'
+import {getGitHubReactVotes, fetchReactVotes, test} from '../store'
 
 class FrameworkData extends Component {
   constructor(){
@@ -13,7 +13,7 @@ class FrameworkData extends Component {
 
 async componentDidMount(){
   await this.props.getOldReactVotes()
-  // await this.props.getNewReactVotes()
+  await this.props.getNewReactVotes()
   this.setState({loading: false})
 }
 
@@ -25,10 +25,13 @@ filterReactVotes = (reactVotes) => {
 }
 
   render() {
-
     if (this.state.loading) return (<h1>LOADING</h1>)
 
     const filteredReactVotes = this.filterReactVotes(this.props.reactVotes)
+
+    // const reactInterval = window.setInterval(this.props.getNewReactVotes, 60000)
+
+    console.log('this.props.reactVotes', this.props.reactVotes)
 
     return (
       <Container>
@@ -77,14 +80,14 @@ filterReactVotes = (reactVotes) => {
 
 const mapStateToProps = state => {
   return {
-    reactVotes: state.votes.reactVotes
+    reactVotes: state.votes.reactVotes,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     getNewReactVotes: () => dispatch(getGitHubReactVotes()),
-    getOldReactVotes: () => dispatch(fetchReactVotes())
+    getOldReactVotes: () => dispatch(fetchReactVotes()),
   }
 }
 
