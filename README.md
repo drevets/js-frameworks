@@ -6,7 +6,7 @@ The Next Great JS Framework is an app designed to compare four different JS Fram
 
 For this project, when a GitHub user takes an action that creates a Pull Request Event, a Fork Event, or an Issues Event, that counts as a “vote” towards the framework. This project monitors Fork Events, Pull Request Events, and Issues Events because these three types of actions show active involvement and questions, as opposed to passive actions like starring repos or watching them.
 
-You can see the deployed app on Heroku: <link here> 
+You can see the deployed app on Heroku: [coming soon]
 
 ## Why
 
