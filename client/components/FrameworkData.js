@@ -32,7 +32,7 @@ class FrameworkData extends Component {
   async componentDidMount() {
     await this.state.frameworks.forEach(async framework => {
       await this.props.getOldVotes(framework.framework, framework.owner)
-      // await this.props.getNewVotes(framework.framework, framework.owner)
+      await this.props.getNewVotes(framework.framework, framework.owner)
     })
     this.setState({loading: false})
   }
@@ -70,13 +70,7 @@ class FrameworkData extends Component {
 
     const filteredVotes = this.filterVotes(this.props.votes)
 
-    // const oneVote = this.props.votes.react[0]
-    // const twoVote = this.props.votes.react[1]
-    // console.log('oneVote', oneVote, 'twoVote', twoVote)
-
-    // console.log('oneVote minus twoVote', oneVote > twoVote)
-
-    // const getNewVotes = window.setInterval(this.getNewVotes, 60000, this.state.frameworks)
+    const getNewVotes = window.setInterval(this.getNewVotes, 60000, this.state.frameworks)
 
     return (
       <Container style={{padding: '30px'}}>

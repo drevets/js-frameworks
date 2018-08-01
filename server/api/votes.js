@@ -2,9 +2,6 @@ const router = require('express').Router()
 const {Vote} = require('../db/models')
 module.exports = router
 
-//this is /api/votes/X
-//need to fill in the attributes + the specific framework
-
 router.get('/', async (req, res, next) => {
   const repo = `${req.query.owner}/${req.query.framework}`
   try {

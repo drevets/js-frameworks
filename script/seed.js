@@ -1,24 +1,9 @@
 'use strict'
 
 const db = require('../server/db')
-const {Framework} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
-  await Framework.bulkCreate([
-    {
-      name: 'React'
-    },
-    {
-      name: 'Vue'
-    },
-    {
-      name: 'Angular'
-    },
-    {
-      name: 'Ember'
-    }
-  ])
   console.log('db synced!')
 }
 
