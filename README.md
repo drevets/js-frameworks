@@ -25,7 +25,7 @@ Download the code, then run `npm install` and `npm run start-dev`.
 * GitHub API 
 * Semantic UI 
 * Heroku 
-* [Boilermaker app template] (https://github.com/FullstackAcademy/boilermaker)
+* [Boilermaker app template](https://github.com/FullstackAcademy/boilermaker)
 
 # Reasoning 
 
