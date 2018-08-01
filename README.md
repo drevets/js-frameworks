@@ -34,7 +34,7 @@ Download the code, then run `npm install` and `npm run start-dev`.
 
 ## Choosing API routes 
 
-I wanted to see active data coming from events in real-time. Though the app currently doesn’t support graph-like views, that would be an interesting feature to add. That’s why I decided to use the [GitHub Events API] (https://developer.github.com/v3/activity/events/types/). This allowed me to access recent public events from each repository I wanted to monitor (Vue.js, Ember.js, Angular.js, React) and add them to a database, which could (over time) build a picture of how activity in each repository is changing. 
+I wanted to see active data coming from events in real-time. Though the app currently doesn’t support graph-like views, that would be an interesting feature to add. That’s why I decided to use the ![GitHub Events API] (https://developer.github.com/v3/activity/events/types/). This allowed me to access recent public events from each repository I wanted to monitor (Vue.js, Ember.js, Angular.js, React) and add them to a database, which could (over time) build a picture of how activity in each repository is changing. 
 
 That said, the Events API did have some limitations. It only allowed the user to access the 300 most recent events, meaning historical data was closed to me. Furthermore, the number of events per API call page was limited to 30, which meant I had to loop through the API results in order to get all of the events. 
 
